@@ -18,17 +18,13 @@ const FeedingSchema = new Schema({
     type: String,
     required: true
   },
-  time_date_added: {
+  time_fed: {
     type: Date,
     default: Date.now
   },
   food_type:{
     type: String,
     required: true
-  },
-  is_repeat_food_everyday:{
-      type: Boolean,
-      default: false
   }
 });
-module.exports = Feeding = mongoose.model("feeding", UserSchema);
+module.exports = Feeding = mongoose.model("feeding", FeedingSchema);

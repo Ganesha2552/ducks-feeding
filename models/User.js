@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Feeding = require("./Feeding");
 const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
@@ -17,6 +18,18 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  isadmin:{
+    type: Boolean,
+    default: false
+},feedings:[{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: Feeding
+}],
+autoschedule_enable:{
+  type: Boolean,
+  default:false
+}
+
 });
 module.exports = User = mongoose.model("users", UserSchema);
