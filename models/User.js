@@ -25,11 +25,7 @@ const UserSchema = new Schema({
 },feedings:[{
   type: mongoose.Schema.Types.ObjectId,
   ref: Feeding
-}],
-autoschedule_enable:{
-  type: Boolean,
-  default:false
-}
+}]
 
 });
 module.exports = User = mongoose.model("users", UserSchema);

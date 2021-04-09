@@ -19,12 +19,20 @@ const FeedingSchema = new Schema({
     required: true
   },
   time_fed: {
-    type: Date,
-    default: Date.now
+    type: String,
+    required: true
   },
   food_type:{
     type: String,
     required: true
-  }
+  },
+  autoschedule_enable:{
+    type: Boolean,
+    default:false
+  },
+  datentime: {
+    type: Date,
+    default:Date.now()
+  },
 });
 module.exports = Feeding = mongoose.model("feeding", FeedingSchema);

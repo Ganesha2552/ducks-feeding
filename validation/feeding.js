@@ -3,15 +3,14 @@ const isEmpty = require("is-empty");
 module.exports = function validateFeedingformInput(data) {
     let errors = {};
     // Convert empty fields to an empty string so we can use validator functions
-    console.log("passed");
-
     data.ducks_count = !isEmpty(data.ducks_count) ? data.ducks_count : 0;
     data.food_quantity = !isEmpty(data.food_quantity) ? data.food_quantity : 0;
-    console.log("passed");
     data.food = !isEmpty(data.food) ? data.food : "";
     data.place_fed = !isEmpty(data.place_fed) ? data.place_fed : "";
     data.food_type = !isEmpty(data.food_type) ? data.food_type : "";
     data.time_fed = !isEmpty(data.time_fed) ? data.time_fed : "";
+    data.autoschedule_enable = !isEmpty(data.autoschedule_enable) ? data.autoschedule_enable : false;
+
     // Ducks count checks
     if (Validator.isEmpty(data.ducks_count)) {
         errors.ducks_count = "Ducks count is required";
@@ -51,9 +50,11 @@ module.exports = function validateFeedingformInput(data) {
     }
 
     //Food fed time checks
-    if (!Validator.toDate(data.time_fed)) {
-        errors.time_fed = "Food fed time should be a valid date";
-    } else if (!Validator.isBefore(data.time_fed)) {
+    now= new Date();
+    var nowTime = now.getHours()*60+now.getMinutes();
+    inputTimeHrsAndMins= data.time_fed.split(":");
+    inputTime=inputTimeHrsAndMins[0]*60+inputTimeHrsAndMins[1];
+    if (inputTime<nowTime) {
         errors.time_fed = "Food fed time should be a past time";
     }
 
@@ -62,6 +63,3 @@ module.exports = function validateFeedingformInput(data) {
         isValid: isEmpty(errors)
     };
 };
-
-
-
