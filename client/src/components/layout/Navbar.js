@@ -21,23 +21,23 @@ class Navbar extends Component {
       return (
         <div className="navbar-fixed">
           <nav>
-            <div class="nav-wrapper light-blue darken-1">
-              <a href="/" class="brand-logo" ><img src={logo} alt="Duck Research" style={{ width: 48, height: 48, paddingTop: 20 }}></img>Duck Feeding Research</a>
+            <div className="nav-wrapper light-blue darken-1">
+              <a href="/" className="brand-logo" ><img src={logo} alt="Duck Research" style={{ width: 48, height: 48, paddingTop: 20 }}></img>Duck Feeding Research</a>
 
-              <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <ul id="nav-mobile" className="right hide-on-med-and-down">
 
-                <li><a><Link
+                <li><Link
                   to="/formfeed"
 
                 >
                   Duck Feeding Form
-        </Link></a></li>
-                <li><a><Link
+        </Link></li>
+                <li><Link
                   to="/editrecord"
 
                 >
                   Duck Feeding Record Edit
-        </Link></a></li>
+        </Link></li>
                 <li><a onClick={this.onLogoutClick}>
                   Logout
         </a></li>
@@ -53,8 +53,8 @@ class Navbar extends Component {
       return (
         <div className="navbar-fixed">
           <nav>
-            <div class="nav-wrapper light-blue darken-1">
-              <a href="/" class="brand-logo" ><img src={logo} alt="Duck Research" style={{ width: 48, height: 48, paddingTop: 20 }}></img>Duck Feeding Research</a>
+            <div className="nav-wrapper light-blue darken-1">
+              <a href="/" className="brand-logo" ><img src={logo} alt="Duck Research" style={{ width: 48, height: 48, paddingTop: 20 }}></img>Duck Feeding Research</a>
             </div>
           </nav>
 

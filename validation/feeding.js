@@ -1,10 +1,11 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
+const moment=require("moment");
 module.exports = function validateFeedingformInput(data) {
     let errors = {};
     // Convert empty fields to an empty string so we can use validator functions
-    data.ducks_count = !isEmpty(data.ducks_count) ? data.ducks_count : 0;
-    data.food_quantity = !isEmpty(data.food_quantity) ? data.food_quantity : 0;
+    data.ducks_count = !isEmpty(data.ducks_count) ? data.ducks_count : "";
+    data.food_quantity = !isEmpty(data.food_quantity) ? data.food_quantity : "";
     data.food = !isEmpty(data.food) ? data.food : "";
     data.place_fed = !isEmpty(data.place_fed) ? data.place_fed : "";
     data.food_type = !isEmpty(data.food_type) ? data.food_type : "";
@@ -16,7 +17,7 @@ module.exports = function validateFeedingformInput(data) {
         errors.ducks_count = "Ducks count is required";
     } else if (!Validator.isNumeric(data.ducks_count)) {
         errors.ducks_count = "Ducks count is a number";
-    } else if (data.ducks_count < 1) {
+    } else if (parseInt(data.ducks_count) < 1) {
         errors.ducks_count = "Ducks count should be greater than 0";
     }
     // Food quantity checks
@@ -24,7 +25,7 @@ module.exports = function validateFeedingformInput(data) {
         errors.food_quantity = "Food quantity field is required";
     } else if (!Validator.isNumeric(data.food_quantity)) {
         errors.food_quantity = "Food quantity is a number";
-    } else if (data.food_quantity < 1) {
+    } else if (parseInt(data.food_quantity) < 1) {
         errors.food_quantity = "Food quantity should be greater than 0";
     }
 
@@ -32,6 +33,7 @@ module.exports = function validateFeedingformInput(data) {
     if (Validator.isEmpty(data.food)) {
         errors.food = "Food given field is required";
     } else if (!Validator.isLength(data.food, { min: 3, max: 30 })) {
+        console.log("I am here");
         errors.food = "Food Name must be at least 3 characters";
     }
 
@@ -51,11 +53,24 @@ module.exports = function validateFeedingformInput(data) {
 
     //Food fed time checks
     now= new Date();
-    var nowTime = now.getHours()*60+now.getMinutes();
+    console.log("current hrs:"+now.getHours());
+    console.log("current mins:"+now.getMinutes());
+    var nowTime = (now.getHours()*60)+now.getMinutes();
+    console.log("current time:"+nowTime);
+//Checking valid time format    
+    if(Validator.isEmpty(data.time_fed)){
+        errors.time_fed = "Time of fed is required";
+    }else if(!moment(data.time_fed, "HH:mm", true).isValid()){
+        errors.time_fed = "Invalid Time format, HH:mm is required";
+    }
     inputTimeHrsAndMins= data.time_fed.split(":");
-    inputTime=inputTimeHrsAndMins[0]*60+inputTimeHrsAndMins[1];
-    if (inputTime<nowTime) {
-        errors.time_fed = "Food fed time should be a past time";
+    console.log("input data time:"+data.time_fed);
+
+    inputTime=((parseInt(inputTimeHrsAndMins[0]))*60)+parseInt(inputTimeHrsAndMins[1]);
+    console.log("inputTime :"+inputTime);
+
+    if (inputTime>nowTime) {
+        errors.time_fed = "Food fed time should be a less than the current time";
     }
 
     return {
