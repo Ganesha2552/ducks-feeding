@@ -9,8 +9,9 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install && npm run build"
-    },
+    "build": "cd client && npm install && npm run build && cd ../server && npm install"
+
+  },
   "author": "Ganesha moorthy",
   "license": "ISC",
   "dependencies": {
