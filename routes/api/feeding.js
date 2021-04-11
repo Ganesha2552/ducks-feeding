@@ -7,10 +7,10 @@ const Feeding = require("../../models/Feeding");
 const validateFeedingformInput = require("../../validation/feeding");
 const validateFeedingDelete = require("../../validation/feedingrecorddelete");
 const validateFeedingUpdate = require("../../validation/feedingrecordupdate");
-const scheduler = require('node-schedule');
 const converter = require('json-2-csv');
 
 const mongoose = require("mongoose");
+const SchedulerTask = require("../../models/SchedulerTask");
 
 // @route POST /api/feeding/create
 // @desc Feeding form add record and return success message
@@ -51,43 +51,13 @@ router.post("/create", (req, res) => {
         feeding.save()
             .then(feeding => {
                 if (feeding.autoschedule_enable) {
-                    var rule = new scheduler.RecurrenceRule();
-                    var currentdate=new Date();
-                    console.log(currentdate.getHours());
-                    console.log(currentdate.getMinutes());
-
-                    rule.hour = currentdate.getHours();
-                    rule.minute = currentdate.getMinutes();
-                    rule.second = 00;
-                    rule.dayOfWeek = new scheduler.Range(0, 6);
-                    //JOB Id is Feeding object id
-                    scheduler.scheduleJob(decoded.id+"##"+feeding.id,rule, function(){
-                        console.log("From scheduler "+this.name.split("##"));
-                        splitarr=this.name.split("##");
-                        userId=splitarr[0];
-                        feedId=splitarr[1];
-
-                        Feeding.findById(feedId).then(record =>{
-                            const recordobj = new Feeding({
-                                ducks_count: record.ducks_count,
-                                food_quantity: record.food_quantity,
-                                food: record.food,
-                                place_fed: record.place_fed,
-                                food_type: record.food_type,
-                                time_fed: record.time_fed,
-                                autoschedule_enable: false
-                            });
-                            recordobj.save().then(recordobj=>{
-                                User.findOneAndUpdate({ _id: userId },
-                                    { $push: { feedings: recordobj.id } }, { safe: true, upsert: true }, function (err, model) {
-                                        console.log(model);
-                                    });
-                            })
-
-                        }
-
-                        );
-                    });
+                    //Data added to db for scheduler
+                    const scheduleData = new SchedulerTask({
+                        job_data:decoded.id+"##"+feeding.id,
+                        time_of_execution:new Date(new Date().getTime() + 60 * 60  * 24 * 1000)
+                    }); 
+                    scheduleData.save();
+            
                   }
                 console.log(feeding.id);
                 User.findOneAndUpdate({ _id: decoded.id },
@@ -278,7 +248,7 @@ router.delete("/delete", (req, res) => {
                     if (err) {
                         return res.status(500).send({ auth: false, message: '1Failed to delete.Try after sometime.' });
                     }
-                    scheduler.cancelJob(id);
+                    SchedulerTask.deleteOne(decoded.id+"##"+id);
                     return res.status(204).json({
                         success: true, message: "Entry deleted Successfully"
                     });

@@ -33,6 +33,9 @@ class Landing extends Component {
       var elems = document.querySelectorAll('.timepicker');
       M.Timepicker.init(elems, {twelveHour: false,onCloseEnd:context.timepickerVal});
     
+        var elem = document.querySelectorAll('select');
+        M.FormSelect.init(elem, {});
+     
     
     
   }
@@ -173,20 +176,27 @@ render() {
                 <label htmlFor="food">Food given</label>
                 <span className="red-text">{errors.food}</span>
               </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.food_type}
-                  error={errors.food_type}
-                  id="food_type"
-                  type="text"
-                  className={classnames("", {
+    
+         
+      
+              <div class="input-field col s12">
+             
+              <select id="food_type" onChange={this.onChange} error={errors.food_type} className={classnames("", {
                     invalid: errors.food_type
-                  })}
-                />
-                <label htmlFor="food_type">Food Category</label>
-                <span className="red-text">{errors.food_type}</span>
-              </div>
+                  })}>
+                <option value="" disabled selected>Choose an option</option>
+                <option value="Grains" >Grains</option>
+                <option value="Seeds and Nuts">Seeds & Nuts</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Other">Other</option>
+              </select>
+              
+              <label htmlFor="food_type"> Food Category</label>
+              <span className="red-text">{errors.food_type}</span>
+
+                </div>
+              
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}

@@ -9,6 +9,8 @@ import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Dashboard from "./components/layout/Dashboard";
 import Register from "./components/auth/Register";
+import Formview from "./components/layout/Formview";
+
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 
@@ -99,6 +101,7 @@ class App extends Component {
             <Switch>
               <PrivateRoute exact path="/formfeed" component={Landing} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/formview" component={Formview} />
 
             </Switch>
           </div>

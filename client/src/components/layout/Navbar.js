@@ -8,11 +8,14 @@ import logo from '../../images/logo/logo192.png';
 
 
 class Navbar extends Component {
+  
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
     window.location.href = "./login";
   };
+  
+  
   render() {
     const { isAuthenticated } = this.props.auth;
     const { user } = this.props.auth;
@@ -27,7 +30,7 @@ class Navbar extends Component {
 
             <ul id="nav-mobile" className="right hide-on-med-and-down">
 
-              <li><Link
+              <li class="active"><Link
                 to="/formfeed"
 
               >
@@ -54,14 +57,14 @@ class Navbar extends Component {
 
               <ul id="nav-mobile" className="right hide-on-med-and-down">
 
-                <li><Link
+                <li id="formfeed" ><Link
                   to="/formfeed"
 
                 >
                   Duck Feeding Form
         </Link></li>
-                <li><Link
-                  to="/editrecord"
+                <li id="formview" ><Link
+                  to="/formview"
 
                 >
                   Duck Feeding Records
