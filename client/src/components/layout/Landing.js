@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../actions/authActions";
 import classnames from "classnames";
 import M from "materialize-css";
 import { createRecord } from "../../actions/feedingformAction";
+import { Redirect } from "react-router";
 
 
 class Landing extends Component {
@@ -26,10 +26,12 @@ class Landing extends Component {
 
   }
   componentDidMount(){
+
+
     console.log("mounting listener added");
     var context=this;
       var elems = document.querySelectorAll('.timepicker');
-      var instances = M.Timepicker.init(elems, {twelveHour: false,onCloseEnd:context.timepickerVal});
+      M.Timepicker.init(elems, {twelveHour: false,onCloseEnd:context.timepickerVal});
     
     
     
@@ -96,7 +98,9 @@ render() {
   const { user } = this.props.auth;
   const { errors } = this.state;
   const { success } = this.state;
-
+  if(user.isadmin){
+    return (<Redirect to="/dashboard" />);
+  }
     return (
       <div>
       <div  >

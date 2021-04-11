@@ -11,8 +11,6 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
-  
-
   },
   "author": "Ganesha moorthy",
   "license": "ISC",
@@ -23,6 +21,7 @@
     "express": "^4.17.1",
     "is-empty": "^1.2.0",
     "jquery": "^3.6.0",
+    "json-2-csv": "^3.10.3",
     "jsonwebtoken": "^8.5.1",
     "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.29.1",
@@ -30,6 +29,8 @@
     "node-schedule": "^2.0.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "react": "^17.0.2",
+    "react-measure": "^2.5.2",
     "validator": "^13.5.2"
   },
   "devDependencies": {

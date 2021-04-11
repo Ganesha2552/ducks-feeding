@@ -8,6 +8,7 @@ const validateFeedingformInput = require("../../validation/feeding");
 const validateFeedingDelete = require("../../validation/feedingrecorddelete");
 const validateFeedingUpdate = require("../../validation/feedingrecordupdate");
 const scheduler = require('node-schedule');
+const converter = require('json-2-csv');
 
 const mongoose = require("mongoose");
 
@@ -152,7 +153,7 @@ router.put("/update", (req, res) => {
 // @access Authenticated
 router.get("/", (req, res) => {
     //token validation
-    var token = req.headers['x-access-token'];
+    var token = req.headers['x-access-token']?req.headers['x-access-token'] : req.query.token? req.query.token:"";
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided. Unauthorised' });
 
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
@@ -170,10 +171,36 @@ router.get("/", (req, res) => {
             if (isAdmin) {
                 //Fetching all records for admin user
                 Feeding.find({}, function (err, records) {
+                    console.log(records);
+                    if (err) {
+                        console.log( err);
+                    }
+                    // var ln = 100000; 
+                    // var arr = [];
+                    // for(var i = 0; i < ln; i++){
+                    // arr.push({
+                    //     key: i, 
+                    //     value: i
+                    // });
+                    // }
+
+                    // var fields = Object.keys(records[0]);
+                    // var opts = { fields };
+                    // json2csv(arr, opts);
+                    converter.json2csv(records, (errorcsv, csv) => {
+                        if (errorcsv) {
+                            console.log( errorcsv);
+                        }
+                        // print CSV string
+                        console.log(csv);
+                        res.attachment('filename.csv');
+                        return res.status(200).send(csv); 
+                    });
 
 
-                    return res.json(records);
-                });
+                }).lean().select('-_id -__v -autoschedule_enable');
+                //select('datentime ducks_count food food_quantity time_fed food_type place_fed');
+               
             } else {
                 //Fetching user specific  records for logged-in user
 

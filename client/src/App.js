@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
+import Dashboard from "./components/layout/Dashboard";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
@@ -14,6 +15,7 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 
 
 // Check for token to keep user logged in
+var userInfo;
 if (localStorage.jwtToken) {
   // Set auth token header auth
   const token = localStorage.jwtToken;
@@ -21,6 +23,7 @@ if (localStorage.jwtToken) {
   // Decode token and get user info and exp
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated
+  userInfo=decoded;
   store.dispatch(setCurrentUser(decoded));
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
@@ -38,7 +41,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      islogined: localStorage.jwtToken
+      islogined: localStorage.jwtToken,
+      isadmin: localStorage.jwtToken?userInfo.isadmin:false
     };
   }
 
@@ -56,7 +60,9 @@ class App extends Component {
               path="/"
               render={() => {
                 return (
-                  this.state.islogined ?
+                  this.state.islogined ? this.state.isadmin ?
+                  <Redirect to="/dashboard"/>
+                    :
                     <Redirect to="/formfeed" /> :
                     <Redirect to="/login" />
                 )
@@ -92,6 +98,8 @@ class App extends Component {
               
             <Switch>
               <PrivateRoute exact path="/formfeed" component={Landing} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+
             </Switch>
           </div>
         </Router>

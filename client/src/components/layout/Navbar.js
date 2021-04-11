@@ -15,9 +15,37 @@ class Navbar extends Component {
   };
   render() {
     const { isAuthenticated } = this.props.auth;
-    console.log(isAuthenticated);
-    var navbarval;
+    const { user } = this.props.auth;
+
+   
     if (isAuthenticated) {
+      if(user.isadmin){
+        return(<div className="navbar-fixed">
+        <nav>
+          <div className="nav-wrapper light-blue darken-1">
+            <a href="/" className="brand-logo" ><img src={logo} alt="Duck Research" style={{ width: 48, height: 48, paddingTop: 20 }}></img>Duck Feeding Research</a>
+
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+
+              <li><Link
+                to="/formfeed"
+
+              >
+                Dashboard
+      </Link></li>
+              
+              <li><a onClick={this.onLogoutClick}>
+                Logout
+      </a></li>
+
+
+            </ul></div>
+        </nav>
+
+
+      </div>
+    );
+      }
       return (
         <div className="navbar-fixed">
           <nav>
@@ -36,7 +64,7 @@ class Navbar extends Component {
                   to="/editrecord"
 
                 >
-                  Duck Feeding Record Edit
+                  Duck Feeding Records
         </Link></li>
                 <li><a onClick={this.onLogoutClick}>
                   Logout
