@@ -85,7 +85,7 @@ app.use("/api/feeding", feeding);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.use('*',(req,res)=>{
-    res.sendFile(path.resolve("__dirname","client","build","index.html","Landing.js","Dashboard.js","Login.js","Register.js","Formview.js"));
+    res.sendFile(path.resolve(__dirname + '/app/client/build/index.html'))
   });
 }
 const port = process.env.PORT || 5000; // process.env.port is Heroku's port 
