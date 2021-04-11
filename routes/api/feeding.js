@@ -187,7 +187,26 @@ router.get("/", (req, res) => {
                     // var fields = Object.keys(records[0]);
                     // var opts = { fields };
                     // json2csv(arr, opts);
-                    converter.json2csv(records, (errorcsv, csv) => {
+                   
+                  
+                   
+                renameKey= ( obj ) =>{
+                    obj["Number of ducks"] = obj["ducks_count"];
+                    delete obj["ducks_count"];
+
+                    obj["Food given"] = obj["food"];
+                    delete obj["food"];
+                    obj["Place of Feed"] = obj["place_fed"];
+                    delete obj["place_fed"];
+                    obj["Food Category"] = obj["food_type"];
+                    delete obj["food_type"];
+                    obj["Time of Fed"] = obj["time_fed"];
+                    delete obj["time_fed"];
+                    obj["Quantity of food given (in lbs)"] = obj["food_quantity"];
+                    delete obj["food_quantity"];
+                  }
+                records.forEach( obj => renameKey( obj ) );
+                    converter.json2csv(records,(errorcsv, csv) => {
                         if (errorcsv) {
                             console.log( errorcsv);
                         }
