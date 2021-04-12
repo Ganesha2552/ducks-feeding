@@ -48,17 +48,16 @@ class Landing extends Component {
     var todayyear=today.getFullYear();
     //new Date(year, month, day, hours, minutes, seconds, milliseconds)
 
-    var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]);
-    var hr=d.getUTCHours();
-    var min=d.getUTCMinutes();
-    console.log(hr+":"+min);
+    var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]).toUTCString().substring(17,22);
+    
+    console.log(d);
     const createRecord = {
     ducks_count: this.state.ducks_count,
     food_quantity: this.state.food_quantity,
     food: this.state.food,
     place_fed: this.state.place_fed,
     food_type: this.state.food_type,
-    time_fed: hr+":"+min,
+    time_fed: d,
     autoschedule_enable: this.state.autoschedule_enable,
     };
     this.props.createRecord(createRecord, this.props.history);
