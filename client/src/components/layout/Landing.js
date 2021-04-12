@@ -49,7 +49,8 @@ class Landing extends Component {
     //new Date(year, month, day, hours, minutes, seconds, milliseconds)
 
     var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]).toUTCString().substring(17,22);
-    
+    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
+
     console.log(d);
     const createRecord = {
     ducks_count: this.state.ducks_count,
@@ -57,8 +58,9 @@ class Landing extends Component {
     food: this.state.food,
     place_fed: this.state.place_fed,
     food_type: this.state.food_type,
-    time_fed: d,
+    time_fed: this.state.time_fed,
     autoschedule_enable: this.state.autoschedule_enable,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone
     };
     this.props.createRecord(createRecord, this.props.history);
     };

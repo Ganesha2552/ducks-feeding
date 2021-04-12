@@ -10,6 +10,8 @@ module.exports = function validateFeedingformInput(data) {
     data.place_fed = !isEmpty(data.place_fed) ? data.place_fed : "";
     data.food_type = !isEmpty(data.food_type) ? data.food_type : "";
     data.time_fed = !isEmpty(data.time_fed) ? data.time_fed : "";
+    data.tz = !isEmpty(data.tz) ? data.tz : "Universal";
+
     data.autoschedule_enable = !isEmpty(data.autoschedule_enable) ? data.autoschedule_enable : false;
 
     // Ducks count checks
@@ -52,7 +54,7 @@ module.exports = function validateFeedingformInput(data) {
     }
 
     //Food fed time checks
-    now= new Date();
+    now=new Date( new Date().toLocaleString("en-US", {timeZone: data.tz}));
     console.log("current hrs:"+now.getHours());
     console.log("current mins:"+now.getMinutes());
     var nowTime = (now.getHours()*60)+now.getMinutes();
@@ -70,7 +72,6 @@ module.exports = function validateFeedingformInput(data) {
     console.log("inputTime :"+inputTime);
 
     if (inputTime>nowTime) {
-        var datenow=new Date();
         errors.time_fed = "Food fed time should be a less than the current time ";
     }
 
