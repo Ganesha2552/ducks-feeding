@@ -71,7 +71,7 @@ module.exports = function validateFeedingformInput(data) {
 
     if (inputTime>nowTime) {
         var datenow=new Date();
-        errors.time_fed = "Food fed time should be a less than the current time (Timezone - UTC, current time- "+now.getHours()+":"+now.getMinutes()+")";
+        errors.time_fed = "Food fed time should be a less than the current time ";
     }
 
     return {

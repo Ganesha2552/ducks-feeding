@@ -42,7 +42,13 @@ class Landing extends Component {
   onSubmit = e => {
     e.preventDefault();
     var hrsnmin=this.state.time_fed.split(":");
-    var d=new Date().setHours(hrsnmin[0],hrsnmin[1]);
+    var today=new Date();
+    var datetoday=today.getDate();
+    var todayMonth=today.getMonth();
+    var todayyear=today.getFullYear();
+    //new Date(year, month, day, hours, minutes, seconds, milliseconds)
+
+    var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]);
     var hr=d.getUTCHours();
     var min=d.getUTCMinutes();
     console.log(hr+":"+min);

@@ -17,7 +17,6 @@ class Formview extends Component {
       time_fed: "",
       autoschedule_enable: false,
       deleteid:"",
-      editid:"",
       errors: {},
       success:{},
       successmessage:""
@@ -69,7 +68,6 @@ class Formview extends Component {
                     <td>{success[key].place_fed}</td>
                     <td>{success[key].time_fed}</td>
                     <td>{success[key].autoschedule_enable?  <i className="material-icons">check</i>:<i className="material-icons">clear</i>}</td>
-                    <td><a className="btn tooltipped" data-position="bottom" data-tooltip="Edit" alt="Edit" data-target="modaledit"  onClick={() => this.setState({editid:key})}><i className="material-icons">edit</i></a></td>
                     <td><a className="btn tooltipped modal-trigger" data-position="bottom" data-tooltip="Delete" alt="Delete" data-target="modal1"  onClick={() => this.setState({deleteid:key})}><i className="material-icons">delete_forever</i></a></td>
                 </tr>
                 )}
@@ -88,17 +86,7 @@ class Formview extends Component {
     </div>
   </div>
 
-  <div id="modal1" className="modal">
-    <div className="modal-content">
-      <h4>Do you want to Edit this record?</h4>
-      <p>Note: On Editing daily scheduler will also be edited</p>
-    </div>
-    <div className="modal-footer">
-    <a className="modal-close waves-effect waves-green btn-flat">Cancel</a>
-
-      <a onClick={this.editRecordFunc} className="modal-close waves-effect waves-green btn">Confirm</a>
-    </div>
-  </div>
+  
             
         </div>
   
@@ -125,10 +113,7 @@ class Formview extends Component {
         console.log(id)
         this.props.deleteRecord(this.state.deleteid);
     }
-    editRecordFunc=e=>{
-       let id=e.currentTarget.parentNode.parentNode.getAttribute("id");
-         // this.props.updateRecord();
-     }
+    
     componentWillReceiveProps(nextProps) {
         
         if (Object.keys(nextProps.success).length>0) {

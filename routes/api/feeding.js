@@ -6,7 +6,6 @@ const User = require("../../models/User");
 const Feeding = require("../../models/Feeding");
 const validateFeedingformInput = require("../../validation/feeding");
 const validateFeedingDelete = require("../../validation/feedingrecorddelete");
-const validateFeedingUpdate = require("../../validation/feedingrecordupdate");
 const converter = require('json-2-csv');
 
 const mongoose = require("mongoose");
@@ -75,47 +74,6 @@ router.post("/create", (req, res) => {
 
 });
 
-/// @route PUT /api/feeding/update
-// @desc Feeding form update record and return success message
-// @access Authenticated
-router.put("/update", (req, res) => {
-    //token validation
-    var token = req.headers['x-access-token'];
-    if (!token) return res.status(401).send({ auth: false, message: 'No token provided. Unauthorised' });
-
-    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
-        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token. Invalid Token' });
-
-        id=Object.keys(req.body)[0];
-
-
-        // Authorised user validation
-        User.findById(decoded.id).then(user => {
-
-            if (!user) {
-                return res.status(401).json({ auth: false, message: "Unauthorised User" });
-            }
-            feedingIds = user.feedings;
-            console.log(feedingIds.indexOf(id));
-            if (feedingIds.indexOf(id) == -1) {
-                return res.status(400).json({ auth: false, message: 'Invalid record' });
-            }
-            Feeding.findById(id).then(feeding =>{
-                // Form validation and compare diff
-            const { errors, isValid } = validateFeedingUpdate(req.body,id,feeding);
-            // Check validation
-            if (!isValid) {
-                return res.status(400).json(errors);
-            }
-            }
-
-            );
-        });
-    });
-      
-    
-
-});
 
 
 /// @route PUT /api/feeding/update
