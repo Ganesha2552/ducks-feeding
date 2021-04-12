@@ -20,7 +20,7 @@ class Register extends Component {
     if (nextProps.errors) {
       this.setState({errors: nextProps.errors});
       setTimeout(()=> {
-      this.setState({errors: {}})},3000);
+      this.setState({errors: {}})},1500);
     }
   }
 onChange = e => {
