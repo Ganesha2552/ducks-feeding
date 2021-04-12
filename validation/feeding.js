@@ -70,7 +70,8 @@ module.exports = function validateFeedingformInput(data) {
     console.log("inputTime :"+inputTime);
 
     if (inputTime>nowTime) {
-        errors.time_fed = "Food fed time should be a less than the current time";
+        var datenow=new Date();
+        errors.time_fed = "Food fed time should be a less than the current time (Timezone - UTC, current time- "+now.getHours()+":"+now.getMinutes()+")";
     }
 
     return {
