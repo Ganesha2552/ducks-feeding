@@ -18,9 +18,9 @@ class Register extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
+      this.setState({errors: nextProps.errors});
+      setTimeout(()=> {
+      this.setState({errors: {}})},3000);
     }
   }
 onChange = e => {

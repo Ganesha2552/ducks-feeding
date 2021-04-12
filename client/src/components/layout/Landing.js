@@ -41,13 +41,18 @@ class Landing extends Component {
   }
   onSubmit = e => {
     e.preventDefault();
+    var hrsnmin=this.state.time_fed.split(":");
+    var d=new Date().setHours(hrsnmin[0],hrsnmin[1]);
+    var hr=d.getUTCHours();
+    var min=d.getUTCMinutes();
+    console.log(hr+":"+min);
     const createRecord = {
     ducks_count: this.state.ducks_count,
     food_quantity: this.state.food_quantity,
     food: this.state.food,
     place_fed: this.state.place_fed,
     food_type: this.state.food_type,
-    time_fed: this.state.time_fed,
+    time_fed: hr+":"+min,
     autoschedule_enable: this.state.autoschedule_enable,
     };
     this.props.createRecord(createRecord, this.props.history);
