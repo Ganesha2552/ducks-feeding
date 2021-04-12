@@ -103,20 +103,8 @@ router.get("/", (req, res) => {
                     if (err) {
                         console.log( err);
                     }
-                    // var ln = 100000; 
-                    // var arr = [];
-                    // for(var i = 0; i < ln; i++){
-                    // arr.push({
-                    //     key: i, 
-                    //     value: i
-                    // });
-                    // }
 
-                    // var fields = Object.keys(records[0]);
-                    // var opts = { fields };
-                    // json2csv(arr, opts);
-                   
-                  
+            
                    
                 renameKey= ( obj ) =>{
                     obj["Number of ducks"] = obj["ducks_count"];
@@ -195,6 +183,8 @@ router.delete("/delete/:id", (req, res) => {
             }
             feedingIds = user.feedings;
             console.log(feedingIds.indexOf(id));
+            console.log(decoded.id+"##"+id);
+
             if (feedingIds.indexOf(id) == -1) {
                 return res.status(400).json({ auth: false, message: 'Not a valid record! unable to delete' });
             }
@@ -206,7 +196,7 @@ router.delete("/delete/:id", (req, res) => {
                     if (err) {
                         return res.status(500).send({ auth: false, message: '1Failed to delete.Try after sometime.' });
                     }
-                    SchedulerTask.deleteOne(decoded.id+"##"+id);
+                    SchedulerTask.deleteOne({job_data:decoded.id+"##"+id});
                     return res.status(204).json({
                         success: true, message: "Entry deleted Successfully"
                     });
