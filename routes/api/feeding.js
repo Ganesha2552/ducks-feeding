@@ -196,7 +196,8 @@ router.delete("/delete/:id", (req, res) => {
                     if (err) {
                         return res.status(500).send({ auth: false, message: '1Failed to delete.Try after sometime.' });
                     }
-                    SchedulerTask.deleteOne({job_data:decoded.id+"##"+id});
+                    SchedulerTask.findOneAndDelete({job_data:decoded.id+"##"+id}).then(output=>console.log("scheduler deleted ,"+output));
+                    console.log("after delete");
                     return res.status(204).json({
                         success: true, message: "Entry deleted Successfully"
                     });

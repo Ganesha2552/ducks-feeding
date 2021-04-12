@@ -5,6 +5,7 @@ import M from "materialize-css";
 
 
 import { fetchallRecords,deleteRecord } from "../../actions/feedingformAction";
+import succesReducers from "../../reducers/succesReducers";
 class Formview extends Component {
     constructor(){
         super();
@@ -19,7 +20,8 @@ class Formview extends Component {
       deleteid:"",
       errors: {},
       success:{},
-      successmessage:""
+      successmessage:"",
+      nodata:""
     };
     this.time=React.createRef();
 
@@ -34,6 +36,8 @@ class Formview extends Component {
         const { errors } = this.state;
         const { success } = this.state;
         var successmessage=this.state.successmessage;
+
+        var nodata=this.state.nodata;
 
         return (
            
@@ -74,6 +78,7 @@ class Formview extends Component {
          
         </tbody>
       </table>
+      <div className="center"><p className="grey-text text-darken-1"><span className=""><b>{nodata}</b></span></p></div>
       <div id="modal1" className="modal">
     <div className="modal-content">
       <h4>Do you want to delete this record?</h4>
@@ -124,7 +129,11 @@ class Formview extends Component {
             if (nextProps.success===this.state.deleteid){
             var copyobj=this.state.success;
             delete copyobj[this.state.deleteid];
-           
+            if (Object.keys(copyobj).length === 0){
+                this.setState({
+                    nodata:"You have no data to view"
+                })
+            }
             this.setState({
                 deleteid:"",
                 success:copyobj,
@@ -140,9 +149,15 @@ class Formview extends Component {
             this.setState({
                 success:nextProps.success
             })
+           
         }
           
       
+        }
+        if (Object.keys(nextProps.success).length === 0){
+            this.setState({
+                nodata:"You have no data to view"
+            })
         }
         console.log(Object.keys(nextProps));
         console.log("I am here:");
