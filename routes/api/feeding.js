@@ -214,7 +214,7 @@ router.get("/", (req, res) => {
 /// @route PUT /api/feeding/update
 // @desc Feeding form update record and return success message
 // @access Authenticated
-router.delete("/delete", (req, res) => {
+router.delete("/delete/:id", (req, res) => {
     //token validation
     var token = req.headers['x-access-token'];
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided. Unauthorised' });
@@ -222,13 +222,13 @@ router.delete("/delete", (req, res) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token. Invalid Token' });
         // id validation
-        const { errors, isValid } = validateFeedingDelete(req.body);
+        const { errors, isValid } = validateFeedingDelete(req.params);
         // Check validation
         if (!isValid) {
             return res.status(400).json(errors);
         }
 
-        const id = req.body.id;
+        const id = req.params.id;
         // Authorised user validation
         User.findById(decoded.id).then(user => {
 
@@ -238,7 +238,7 @@ router.delete("/delete", (req, res) => {
             feedingIds = user.feedings;
             console.log(feedingIds.indexOf(id));
             if (feedingIds.indexOf(id) == -1) {
-                return res.status(400).json({ auth: false, message: 'Invalid record' });
+                return res.status(400).json({ auth: false, message: 'Not a valid record! unable to delete' });
             }
             Feeding.findByIdAndDelete(id, function (err, docs) {
                 if (err) {

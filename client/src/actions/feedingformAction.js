@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS,GET_FEEDING_DATA,GET_SUCCCESS } from "./types";
+import { GET_ERRORS,GET_FEEDING_DATA,GET_SUCCCESS ,REMOVE_ITEM} from "./types";
 
 export const createRecord = (formData, history) => dispatch => {
     axios
@@ -42,8 +42,6 @@ export const createRecord = (formData, history) => dispatch => {
       )
       .catch(err =>
         {
-          
-
         dispatch({
           type: GET_ERRORS,
           payload: err.response.data
@@ -78,13 +76,13 @@ export const createRecord = (formData, history) => dispatch => {
 
   export const deleteRecord = (id) => dispatch => {
     axios
-      .get("/api/feeding/delete",{id:id})
-      .then(res =>  {
+      .delete("/api/feeding/delete/"+id)
+      .then((res) =>  {
         dispatch({
           type: GET_SUCCCESS,
-          payload: res.data
+          payload: id
       })})
-      .catch(err =>
+      .catch((err) =>
         {
           
 
