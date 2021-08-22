@@ -35,4 +35,4 @@ const FeedingSchema = new Schema({
     default:Date.now()
   },
 });
-module.exports = Feeding = mongoose.model("feeding", FeedingSchema);
+module.exports = Feeding = mongoose.model("Feeding", FeedingSchema);

@@ -23,7 +23,8 @@ router.post("/register", (req, res) => {
         return res.status(400).json({ email: "Email already exists" });
       } else {
         const newUser = new User({
-          name: req.body.name,
+          fname: req.body.fname,
+          lname:req.body.lname,
           email: req.body.email,
           password: req.body.password
         });
@@ -34,7 +35,16 @@ router.post("/register", (req, res) => {
             newUser.password = hash;
             newUser
               .save()
-              .then(user => res.json(user))
+              .then(user => {
+                // console.log(user)
+                
+                // delete user.password;
+                // console.log(user)
+
+                // user.message='Registration Successful!'
+                // console.log(user)
+                output={'message':'Registration Successful!'}
+                res.json(output)})
               .catch(err => console.log(err));
           });
         });
@@ -67,7 +77,9 @@ router.post("/login", (req, res) => {
           // Create JWT Payload
           const payload = {
             id: user.id,
-            name: user.name,
+            fname: user.fname,
+            lname: user.lname,
+            email: user.email,
             isadmin: user.isadmin
           };
   // Sign token
@@ -80,7 +92,8 @@ router.post("/login", (req, res) => {
             (err, token) => {
               res.json({
                 success: true,
-                token: "Bearer " + token
+                token:  token,
+                user:payload
               });
             }
           );

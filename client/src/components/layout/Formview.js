@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import M from "materialize-css";
 
 
 import { fetchallRecords,deleteRecord } from "../../actions/feedingformAction";
@@ -104,9 +103,8 @@ class Formview extends Component {
              
                    this.props.fetchallRecords();
                    var elems = document.querySelectorAll('.tooltipped');
-         M.Tooltip.init(elems, {});
+       
          var elem = document.querySelectorAll('.modal');
-         M.Modal.init(elem);
     
 
     }

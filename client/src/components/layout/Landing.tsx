@@ -1,127 +1,98 @@
 import React, { Component } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import M from "materialize-css";
 import { createRecord } from "../../actions/feedingformAction";
 import { Redirect } from "react-router";
+import {KeyboardDatePicker} from '@material-ui/pickers';
 
+const Landing:React.FC=()=> {
+  const auth=useSelector((state: any) => state.auth)
+  const user=Object.keys(auth.user).length>0?auth.user:{}
+  const isAdmin=Object.keys(user).length>0 && user.isadmin
+  console.log(user)
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     ducks_count: "",
+  //     food_quantity: "",
+  //     food: "",
+  //     place_fed: "",
+  //     food_type: "",
+  //     time_fed: "",
+  //     autoschedule_enable: false,
+  //     errors: {},
+  //     success:{}
+  //   };
+  //   this.time=React.createRef();
 
-class Landing extends Component {
+  // }
+ 
+//  const  onSubmit = (e:React.MouseEvent) => {
+//     e.preventDefault();
+//     var hrsnmin=this.state.time_fed.split(":");
+//     var today=new Date();
+//     var datetoday=today.getDate();
+//     var todayMonth=today.getMonth();
+//     var todayyear=today.getFullYear();
+//     //new Date(year, month, day, hours, minutes, seconds, milliseconds)
 
-  constructor() {
-    super();
-    this.state = {
-      ducks_count: "",
-      food_quantity: "",
-      food: "",
-      place_fed: "",
-      food_type: "",
-      time_fed: "",
-      autoschedule_enable: false,
-      errors: {},
-      success:{}
-    };
-    this.time=React.createRef();
+//     var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]).toUTCString().substring(17,22);
+//     console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
-  }
-  componentDidMount(){
-
-
-    console.log("mounting listener added");
-    var context=this;
-      var elems = document.querySelectorAll('.timepicker');
-      M.Timepicker.init(elems, {twelveHour: false,onCloseEnd:context.timepickerVal});
-    
-        var elem = document.querySelectorAll('select');
-        M.FormSelect.init(elem, {});
-     
-    
-    
-  }
-  onSubmit = e => {
-    e.preventDefault();
-    var hrsnmin=this.state.time_fed.split(":");
-    var today=new Date();
-    var datetoday=today.getDate();
-    var todayMonth=today.getMonth();
-    var todayyear=today.getFullYear();
-    //new Date(year, month, day, hours, minutes, seconds, milliseconds)
-
-    var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]).toUTCString().substring(17,22);
-    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
-
-    console.log(d);
-    const createRecord = {
-    ducks_count: this.state.ducks_count,
-    food_quantity: this.state.food_quantity,
-    food: this.state.food,
-    place_fed: this.state.place_fed,
-    food_type: this.state.food_type,
-    time_fed: this.state.time_fed,
-    autoschedule_enable: this.state.autoschedule_enable,
-    tz: Intl.DateTimeFormat().resolvedOptions().timeZone
-    };
-    this.props.createRecord(createRecord, this.props.history);
-    };
+//     console.log(d);
+//     const createRecord = {
+//     ducks_count: this.state.ducks_count,
+//     food_quantity: this.state.food_quantity,
+//     food: this.state.food,
+//     place_fed: this.state.place_fed,
+//     food_type: this.state.food_type,
+//     time_fed: this.state.time_fed,
+//     autoschedule_enable: this.state.autoschedule_enable,
+//     tz: Intl.DateTimeFormat().resolvedOptions().timeZone
+//     };
+//     this.props.createRecord(createRecord, this.props.history);
+//     };
   
-  onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
+//   onChange = e => {
+//     this.setState({ [e.target.id]: e.target.value });
 
-  };
-  timepickerVal= e=> {
-    this.setState({time_fed:this.time.current.value});
-  }
-  handleCheckboxChange = e => {
-    this.setState({
-      autoschedule_enable: !this.state.autoschedule_enable,
-    });
+//   };
+//   timepickerVal= e=> {
+//     this.setState({time_fed:this.time.current.value});
+//   }
+//   handleCheckboxChange = e => {
+//     this.setState({
+//       autoschedule_enable: !this.state.autoschedule_enable,
+//     });
 
-  };
+//   };
 
   
     
-  onLogoutClick = e => {
-  e.preventDefault();
-  this.props.logoutUser();
-};
-componentWillReceiveProps(nextProps) {
-  console.log(Object.keys(nextProps.success).length);
-  console.log(Object.keys(nextProps.errors).length);
-
-  if (Object.keys(nextProps.success).length>0) {
-    console.log(nextProps.success);
-    this.setState({
-      success: nextProps.success
-    });
-    setTimeout(()=> {
-      this.setState({success: {}})
-     window.location="/";
-    }
-      ,1000);
-
-  }else if (Object.keys(nextProps.errors).length>0) {
-    console.log(nextProps.errors);
-    this.setState({errors: nextProps.errors});
-    setTimeout(()=> {
-      this.setState({errors: {}})},3000);
-  }
+//   onLogoutClick = e => {
+//   e.preventDefault();
+//   this.props.logoutUser();
+// };
   
 
-}
-render() {
-  const { user } = this.props.auth;
-  const { errors } = this.state;
-  const { success } = this.state;
-  if(user.isadmin){
+
+
+  // const { user } = this.props.auth;
+  // const { errors } = this.state;
+  // const { success } = this.state;
+  if(isAdmin){
     return (<Redirect to="/dashboard" />);
   }
+  console.log(user.fname)
     return (
       <div>
       <div  >
           <div >
             <h4>
-              <b>Hi  {user.name.split(" ")[0]}! Welcome to Duck Feeding Research{" "}</b>
+              <b>Hi  {user.fname}! Welcome to Duck Feeding Research{" "}</b>
               
             </h4>
               
@@ -130,7 +101,7 @@ render() {
           </div>
         
       </div>
-      <div className="container">
+      {/* <div className="container">
       <div className="row">
         <div className="col s8 offset-s2">
          
@@ -271,27 +242,11 @@ render() {
           </form>
         </div>
       </div>
-    </div>
+    </div> */}
     </div>
     );
   }
-}
-Landing.propTypes = {
-  createRecord: PropTypes.func.isRequired,
-
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  success: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors,
-  success: state.success
-});
 
 
-export default connect(
-  mapStateToProps,
-  {createRecord}
-)(Landing);
+
+export default Landing;
