@@ -31,7 +31,9 @@
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
     "typescript": "^4.3.5",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "redux-devtools-extension": "^2.13.9"
+
   },
   "scripts": {
     "start": "react-scripts start",
@@ -59,7 +61,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.8",
-    "redux-devtools-extension": "^2.13.9"
+    "@types/react-router-dom": "^5.1.8"
   }
 }
