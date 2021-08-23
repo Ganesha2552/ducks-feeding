@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const Formview: React.FC = () => {
   const { records } = useSelector((state: any) => state.records);
   const dispatch = useDispatch();
-  const [data, setdata] = useState([[]] as any);
+  const [data, setdata] = useState([] as any);
   const classes = useStyles();
   const [successful, setSuccessful] = useState(false);
   const { message } = useSelector((state: any) => state.message);
@@ -54,10 +54,10 @@ const Formview: React.FC = () => {
   const isAdmin = Object.keys(user).length > 0 && user.isadmin;
   const columns = ["Number of Ducks Fed","Quantity of Food Fed (in lbs)", "Food Given", "Food Category","Place of Feeding","Time of Fed","Daily insert of this record","Delete Record"];
   useEffect(() => {
-    let recordsArray=[]
+    let recordsArray:any[]=[]
     for (const key of Object.keys(records)) {
       const value = records[key]
-        let recordArr=[value.ducks_count,value.food_quantity,value.food,value.food_type,value.place_fed,value.time_fed,
+        let recordArr:any[]=[value.ducks_count,value.food_quantity,value.food,value.food_type,value.place_fed,value.time_fed,
           value.autoschedule_enable?<ToggleOnIcon className={classes.checkboxcolor} fontSize="large"/>:<ToggleOffIcon  fontSize="large"/>,
           <DeleteForeverIcon fontSize="large" onClick={(e)=>{dispatch(deleteFormRecord(value._id))}}
           />]
