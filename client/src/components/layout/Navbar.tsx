@@ -47,7 +47,6 @@ const Navbar: React.FC = () => {
   
   const [value, setValue] = React.useState(window.location.pathname.split('/')[1]);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    console.log(newValue)
     if(['dashboard','formfeed','formview'].indexOf(newValue)>0){
       setValue(newValue);
          window.location.href="/"+newValue

@@ -10,11 +10,9 @@ import { formfields } from "../components/layout/validateForm";
 import setAuthToken from "../utils/setAuthToken";
 export const addRecord =(formData:formfields)=>(dispatch: any)=>{
 return new Promise((resolve: any, reject: any) =>{
-    console.log("here")
     setAuthToken()
     createRecord(formData).then(
         (response) => {
-            console.log("here:response",response)
 
           dispatch({
             type: SET_MESSAGE,
@@ -24,7 +22,6 @@ return new Promise((resolve: any, reject: any) =>{
           return Promise.resolve(response.data);
         },
         (error) => {
-            console.log("here:error",error)
 
           const message =
             error.response.data[Object.keys(error.response.data)[0]] ||
@@ -47,13 +44,10 @@ return new Promise((resolve: any, reject: any) =>{
 
   export const getAllRecords =()=>(dispatch: any)=>{
     return new Promise((resolve: any, reject: any) =>{
-        console.log("here")
+      
         setAuthToken()
         fetchallRecords().then(
             (response) => {
-                console.log("here:response",response)
-    
-              
               dispatch({
                 type: GET_FEEDING_DATA,
                 payload: response.data,
@@ -62,8 +56,6 @@ return new Promise((resolve: any, reject: any) =>{
               return Promise.resolve(response.data);
             },
             (error) => {
-                console.log("here:error",error)
-    
               const message =
                 error.response.data[Object.keys(error.response.data)[0]] ||
                 error.message ||
@@ -85,13 +77,10 @@ return new Promise((resolve: any, reject: any) =>{
 
       export const deleteFormRecord =(id:string)=>(dispatch: any)=>{
         return new Promise((resolve: any, reject: any) =>{
-            console.log("here")
+           
             setAuthToken()
             deleteRecord(id).then(
                 (response) => {
-                    console.log("here:response",response)
-        
-                  
                   dispatch({
                     type: DELETE_SUCCESS,
                     payload: {id},
@@ -103,8 +92,6 @@ return new Promise((resolve: any, reject: any) =>{
                   return Promise.resolve(response.data);
                 },
                 (error) => {
-                    console.log("here:error",error)
-        
                   const message =
                     error.response.data[Object.keys(error.response.data)[0]] ||
                     error.message ||

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import {register} from "../../actions/auth"
 import { useDispatch } from "react-redux";
 import { addRecord } from '../../actions/feeding';
 
@@ -30,12 +29,10 @@ const useForm = ( validate:any) => {
   const handleChange = (e:any,name:string) => {
     const value  = name==='autoschedule_enable'?e.target.checked:name==='time_fed'||name==='tz'?e:
     name==='place_fed'||name==="food_type"?e.target.innerText:e.target.value;
-    console.log(name,value,name==='time_fed')
     setValues({
       ...values,
       [name]: value
     });
-    console.log(values)
   };
 
   const handleSubmit = (e:React.MouseEvent) => {
@@ -49,7 +46,6 @@ const useForm = ( validate:any) => {
       if (Object.values(errors).every(x => x === null || x === '') && isSubmitting) {
         
         const resp=addRecord(values)
-        console.log("resp",resp)
         //(values.ducks_count,values.food_quantity, values.food, values.place_fed,values.food_type,values.time_fed,values.autoschedule_enable)
         resp(dispatch)
       }

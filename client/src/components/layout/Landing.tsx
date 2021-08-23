@@ -9,7 +9,6 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -64,9 +63,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Landing: React.FC = () => {
-  const todayDate = new Date(new Date().toString().split("GMT")[0] + " UTC")
-    .toISOString()
-    .split(".")[0];
+  // const todayDate = new Date(new Date().toString().split("GMT")[0] + " UTC")
+  //   .toISOString()
+  //   .split(".")[0];
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [successful, setSuccessful] = useState(false);
   const classes = useStyles();
@@ -101,11 +100,9 @@ const Landing: React.FC = () => {
     handleChange(((((hrs!==undefined && hrs < 10) ? '0' : '') + hrs)+':'+((min!==undefined && min < 10) ? '0' : '') + min),'time_fed')
 
   };
-  console.log(user.fname);
   if (isAdmin) {
     return <Redirect to="/dashboard" />;
   }
-  console.log(message !== undefined && message !== "",message)
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

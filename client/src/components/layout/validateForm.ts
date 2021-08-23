@@ -48,7 +48,6 @@ export interface formfields {
     if (!values.place_fed) {
       errors.place_fed = "Place of Fed is required";
     } 
-    console.log(values)
     if (!values.time_fed) {
       errors.time_fed = "Time of Fed is required";
     } 

@@ -35,7 +35,6 @@ module.exports = function validateFeedingformInput(data) {
     if (Validator.isEmpty(data.food)) {
         errors.food = "Food given field is required";
     } else if (!Validator.isLength(data.food, { min: 3, max: 30 })) {
-        console.log("I am here");
         errors.food = "Food Name must be at least 3 characters";
     }
 
@@ -55,26 +54,20 @@ module.exports = function validateFeedingformInput(data) {
 
     //Food fed time checks
     now=new Date( new Date().toLocaleString("en-US", {timeZone: data.tz}));
-    console.log("current hrs:"+now.getHours());
-    console.log("current mins:"+now.getMinutes());
     var nowTime = (now.getHours()*60)+now.getMinutes();
-    console.log("current time:"+nowTime);
-//Checking valid time format    
+    //Checking valid time format    
     if(Validator.isEmpty(data.time_fed)){
         errors.time_fed = "Time of fed is required";
     }else if(!moment(data.time_fed, "HH:mm", true).isValid()){
         errors.time_fed = "Invalid Time format, HH:mm is required";
     }
     inputTimeHrsAndMins= data.time_fed.split(":");
-    console.log("input data time:"+data.time_fed);
 
     inputTime=((parseInt(inputTimeHrsAndMins[0]))*60)+parseInt(inputTimeHrsAndMins[1]);
-    console.log("inputTime :"+inputTime);
 
     if (inputTime>nowTime) {
         errors.time_fed = "Food fed time should be a less than the current time ";
     }
-
     return {
         errors,
         isValid: isEmpty(errors)
