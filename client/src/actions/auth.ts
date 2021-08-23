@@ -27,7 +27,6 @@ export const register =
           return Promise.resolve(response.data);
         },
         (error) => {
-          console.log(error.response);
           const message =
             error.response.data[Object.keys(error.response.data)[0]] ||
             error.message ||
@@ -36,7 +35,6 @@ export const register =
           dispatch({
             type: REGISTER_FAIL,
           });
-          console.log(message);
           dispatch({
             type: SET_MESSAGE,
             payload: message,
@@ -64,24 +62,20 @@ export const login = (email: string, password: string) => (dispatch: any) => {
             token: response.data.token,
           },
         });
-        console.log("here:::");
-        dispatch({
-          type: SET_MESSAGE,
-          payload: response.data.token,
-        });
+        // dispatch({
+        //   type: SET_MESSAGE,
+        //   payload: response.data.token,
+        // });
         return Promise.resolve(response.data);
       },
       (error) => {
-        console.log(error.response);
         const message =
           error.response.data[Object.keys(error.response.data)[0]] ||
           error.message ||
           error.toString();
-        console.log(message);
         dispatch({
           type: LOGIN_FAIL,
         });
-        console.log(message);
         dispatch({
           type: SET_MESSAGE,
           payload: message,

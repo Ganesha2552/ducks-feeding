@@ -69,7 +69,6 @@ export default function Register() {
       type: CLEAR_MESSAGE,
     });
   }
-  console.log(message, successful, message && !successful);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

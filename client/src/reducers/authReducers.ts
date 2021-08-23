@@ -13,17 +13,15 @@ export default interface IAction<T> extends Action<string> {
   error?: boolean;
   meta?: any;
 }
-console.log(localStorage.getItem("user"));
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 const token = localStorage.getItem("token") || "";
 interface stateData {
-  isLoggedIn: boolean;
   user: Object;
   token: string;
 }
 const initialState: stateData = user
-  ? { isLoggedIn: true, user, token }
-  : { isLoggedIn: false, user: {}, token };
+  ? {  user, token }
+  : {  user: {}, token :""};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action: IAction<any>) {
@@ -32,31 +30,33 @@ export default function (state = initialState, action: IAction<any>) {
     case REGISTER_SUCCESS:
       return {
         ...state,
-        isLoggedIn: false,
+        user: {},
+        token :""
       };
     case REGISTER_FAIL:
       return {
         ...state,
-        isLoggedIn: false,
+        user: {},
+        token :""
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
-        isLoggedIn: true,
+        
         user: payload.user,
         token: payload.token,
       };
     case LOGIN_FAIL:
       return {
         ...state,
-        isLoggedIn: false,
         user: {},
+        token :""
       };
     case LOGOUT:
       return {
         ...state,
-        isLoggedIn: false,
         user: {},
+        token :""
       };
     default:
       return state;

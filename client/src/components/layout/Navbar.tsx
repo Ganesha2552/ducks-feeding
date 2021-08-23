@@ -1,7 +1,7 @@
 import React from "react";
 import { logout } from "../../actions/auth";
 import { makeStyles } from "@material-ui/core/styles";
-import {  useSelector } from "react-redux";
+import {  useSelector,useDispatch } from "react-redux";
 
 import logo from "../../images/logo/logo192.png";
 import { AppBar, Tab, Tabs, Toolbar } from "@material-ui/core";
@@ -33,25 +33,34 @@ const Navbar: React.FC = () => {
       paddingRight: "8px",
     },
   });
+  const dispatch = useDispatch();
+
   const onLogoutClick = (e:any) => {
     e.preventDefault();
-   // this.props.logoutUser();
-     logout();
-   // window.location.href = "./login";
+    dispatch(logout());
   };
-  const handleChange = (e: any) => {};
   const classes = useStyles();
   const auth = useSelector((state: any) => state.auth);
   const user = Object.keys(auth.user).length > 0 ? auth.user : {};
   const isAdmin = Object.keys(user).length > 0 && user.isadmin;
-  console.log(isMobile, "isMobile");
-  const isAuthenticated = auth.isLoggedIn;
+  const isAuthenticated = Object.keys(user).length > 0;
+  
+  const [value, setValue] = React.useState(window.location.pathname.split('/')[1]);
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    console.log(newValue)
+    if(['dashboard','formfeed','formview'].indexOf(newValue)>0){
+      setValue(newValue);
+         window.location.href="/"+newValue
+    }else{
+      window.location.href="/";
+    }
+  };
   if (!isMobile) {
     if (isAuthenticated) {
       if (isAdmin) {
         return (
           <AppBar className={classes.appbar}>
-            <Tabs value={1} onChange={handleChange}>
+            <Tabs value={value} onChange={handleChange}>
               <Toolbar>
                 <img src={logo} alt="Duck Research" className={classes.logo} />{" "}
                 <h2>Duck Feeding Research</h2>
@@ -65,6 +74,7 @@ const Navbar: React.FC = () => {
                   </div>
                 }
                 className={classes.tabs}
+                value={'dashboard'}
               />
               <Tab
                 label={
@@ -81,7 +91,7 @@ const Navbar: React.FC = () => {
       } else {
         return (
           <AppBar className={classes.appbar}>
-            <Tabs value={1} onChange={handleChange} className="">
+            <Tabs value={value} onChange={handleChange} className="">
               <Toolbar>
                 <img src={logo} alt="Duck Research" className={classes.logo} />{" "}
                 <h2>Duck Feeding Research</h2>
@@ -95,6 +105,7 @@ const Navbar: React.FC = () => {
                     <div>Form</div>
                   </div>
                 }
+                value={'formfeed'}
               ></Tab>
 
               <Tab
@@ -104,6 +115,7 @@ const Navbar: React.FC = () => {
                     <div>Records</div>
                   </div>
                 }
+                value={"formview"}
               />
               <Tab
                 label={
@@ -133,7 +145,7 @@ const Navbar: React.FC = () => {
       if (isAdmin) {
         return (
           <AppBar className={classes.appbar}>
-            <Tabs value={1} onChange={handleChange} className="">
+            <Tabs value={value} onChange={handleChange} className="">
               <Toolbar className={classes.mobiletoolbar}>
                 <div>
                   <img
@@ -154,6 +166,7 @@ const Navbar: React.FC = () => {
                     <div className={classes.tabstyle}>Dashboard</div>
                   </div>
                 }
+                value={'dashboard'}
               ></Tab>
 
               <Tab
@@ -171,7 +184,7 @@ const Navbar: React.FC = () => {
       } else {
         return (
           <AppBar className={classes.appbar}>
-            <Tabs value={1} onChange={handleChange} className="">
+            <Tabs value={value} onChange={handleChange} className="">
               <Toolbar className={classes.mobiletoolbar}>
                 <div>
                   <img
@@ -192,6 +205,7 @@ const Navbar: React.FC = () => {
                     <div className={classes.tabstyle}>Form</div>
                   </div>
                 }
+                value={"formfeed"}
               ></Tab>
 
               <Tab
@@ -201,6 +215,7 @@ const Navbar: React.FC = () => {
                     <div className={classes.tabstyle}>Records</div>
                   </div>
                 }
+                value={"formview"}
               />
               <Tab
                 label={

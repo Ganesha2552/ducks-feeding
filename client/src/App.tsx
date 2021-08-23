@@ -14,7 +14,6 @@ import { clearMessage } from "./actions/message";
 const App: React.FC = () => {
   const { user: currentUser } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
-  console.log(currentUser === {}, currentUser);
   useEffect(() => {
     return history.listen((location) => {
       dispatch(clearMessage()); // clear message when changing location

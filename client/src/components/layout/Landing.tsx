@@ -1,252 +1,303 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import classnames from "classnames";
-import { createRecord } from "../../actions/feedingformAction";
 import { Redirect } from "react-router";
-import {KeyboardDatePicker} from '@material-ui/pickers';
+import {
+  KeyboardTimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Alert from "@material-ui/lab/Alert";
+import { FormHelperText, Snackbar, Switch } from "@material-ui/core";
+import { CLEAR_MESSAGE } from "../../actions/types";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { CountryType, countries } from "../../common/countryData";
+import DateFnsUtils from "@date-io/date-fns";
+import useForm from './useForm';
+import validate from './validateForm';
 
-const Landing:React.FC=()=> {
-  const auth=useSelector((state: any) => state.auth)
-  const user=Object.keys(auth.user).length>0?auth.user:{}
-  const isAdmin=Object.keys(user).length>0 && user.isadmin
-  console.log(user)
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     ducks_count: "",
-  //     food_quantity: "",
-  //     food: "",
-  //     place_fed: "",
-  //     food_type: "",
-  //     time_fed: "",
-  //     autoschedule_enable: false,
-  //     errors: {},
-  //     success:{}
-  //   };
-  //   this.time=React.createRef();
 
-  // }
- 
-//  const  onSubmit = (e:React.MouseEvent) => {
-//     e.preventDefault();
-//     var hrsnmin=this.state.time_fed.split(":");
-//     var today=new Date();
-//     var datetoday=today.getDate();
-//     var todayMonth=today.getMonth();
-//     var todayyear=today.getFullYear();
-//     //new Date(year, month, day, hours, minutes, seconds, milliseconds)
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(12),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: "#419BE4",
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#2196f3",
+    color: "#fafafa",
+    "&:hover": {
+      backgroundColor: "#419BE4",
+      color: "#ffffff",
+    },
+  },
+  checkboxcolor: {
+    color: "#2196f3",
+  },
+  errormsg: {
+    color: "#f44336",
+  },
+  option: {
+    fontSize: 15,
+    "& > span": {
+      marginRight: 10,
+      fontSize: 18,
+    },
+  },
+}));
 
-//     var d=new Date(todayyear,todayMonth,datetoday,hrsnmin[0],hrsnmin[1]).toUTCString().substring(17,22);
-//     console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
+const Landing: React.FC = () => {
+  const todayDate = new Date(new Date().toString().split("GMT")[0] + " UTC")
+    .toISOString()
+    .split(".")[0];
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [successful, setSuccessful] = useState(false);
+  const classes = useStyles();
+  const auth = useSelector((state: any) => state.auth);
+  const { message } = useSelector((state: any) => state.message);
+  const dispatch = useDispatch();
+  const { handleChange, handleSubmit, values, errors } = useForm(validate);
+  const user = Object.keys(auth.user).length > 0 ? auth.user : {};
+  const isAdmin = Object.keys(user).length > 0 && user.isadmin;
+  useEffect(() => {
+    if (message !== undefined && message === "Entry added Successfully") {
+      setSuccessful(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
 
-//     console.log(d);
-//     const createRecord = {
-//     ducks_count: this.state.ducks_count,
-//     food_quantity: this.state.food_quantity,
-//     food: this.state.food,
-//     place_fed: this.state.place_fed,
-//     food_type: this.state.food_type,
-//     time_fed: this.state.time_fed,
-//     autoschedule_enable: this.state.autoschedule_enable,
-//     tz: Intl.DateTimeFormat().resolvedOptions().timeZone
-//     };
-//     this.props.createRecord(createRecord, this.props.history);
-//     };
   
-//   onChange = e => {
-//     this.setState({ [e.target.id]: e.target.value });
 
-//   };
-//   timepickerVal= e=> {
-//     this.setState({time_fed:this.time.current.value});
-//   }
-//   handleCheckboxChange = e => {
-//     this.setState({
-//       autoschedule_enable: !this.state.autoschedule_enable,
-//     });
-
-//   };
-
-  
-    
-//   onLogoutClick = e => {
-//   e.preventDefault();
-//   this.props.logoutUser();
-// };
-  
-
-
-
-  // const { user } = this.props.auth;
-  // const { errors } = this.state;
-  // const { success } = this.state;
-  if(isAdmin){
-    return (<Redirect to="/dashboard" />);
+  const handleClose=()=>{
+    dispatch({
+      type: CLEAR_MESSAGE,
+    });
   }
-  console.log(user.fname)
-    return (
-      <div>
-      <div  >
-          <div >
-            <h4>
-              <b>Hi  {user.fname}! Welcome to Duck Feeding Research{" "}</b>
-              
-            </h4>
-              
-            <br />
-            
-          </div>
-        
-      </div>
-      {/* <div className="container">
-      <div className="row">
-        <div className="col s8 offset-s2">
-         
-          <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-            <h4>
-              <b>Fill the survey form</b> below
-            </h4>
-            <p className="grey-text text-darken-1">
-            <span className="green-text"><b>{success.message}</b></span>
 
-            </p>
-          </div>
-          <form noValidate onSubmit={this.onSubmit}>
-            <div className="input-field col s12">
-              <input
-                min="1"
-                onChange={this.onChange}
-                value={this.state.ducks_count}
-                error={errors.ducks_count}
+  const handleDateChange = (date: Date | null ) => {
+    setSelectedDate(date)
+    const min= date?.getMinutes();
+    const hrs=date?.getHours();
+    handleChange(((((hrs!==undefined && hrs < 10) ? '0' : '') + hrs)+':'+((min!==undefined && min < 10) ? '0' : '') + min),'time_fed')
+
+  };
+  console.log(user.fname);
+  if (isAdmin) {
+    return <Redirect to="/dashboard" />;
+  }
+  console.log(message !== undefined && message !== "",message)
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Snackbar
+        open={message !== undefined && message !== ""}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        key="top"
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={!successful ? "error" : "success"}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
+
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Survey Form
+        </Typography>
+        <form className={classes.form} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="ducks_count"
+                name="ducks_count"
+                variant="outlined"
+                required
+                fullWidth={true}
                 id="ducks_count"
-                type="number"
-                className={classnames("", {
-                  invalid: errors.ducks_count
-                })}
+                label="Number of ducks fed"
+                autoFocus
+                value={values.ducks_count}
+                onChange={(e) => handleChange(e, "ducks_count")}
+                error={errors.ducks_count !== ""}
+                helperText={
+                  <span className={classes.errormsg}>{errors.ducks_count}</span>
+                }
               />
-              <label htmlFor="ducks_count">Number of ducks fed</label>
-              <span className="red-text">{errors.ducks_count}</span>
-            </div>
-            <div className="input-field col s12">
-              <input
-                min="1"
-                onChange={this.onChange}
-                value={this.state.food_quantity}
-                error={errors.food_quantity}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth={true}
                 id="food_quantity"
-                type="number"
-                className={classnames("", {
-                  invalid: errors.food_quantity
-                })}
+                label="Quantity of food fed"
+                name="food_quantity"
+                autoComplete="food_quantity"
+                onChange={(e) => handleChange(e, "food_quantity")}
+                value={values.food_quantity}
+                error={errors.food_quantity !== ""}
+                helperText={
+                  <span className={classes.errormsg}>
+                    {errors.food_quantity}
+                  </span>
+                }
               />
-              <label htmlFor="food_quantity">Quantity of food fed (in lbs)</label>
-              <span className="red-text">{errors.food_quantity}</span>
-            </div>
-            <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.food}
-                  error={errors.food}
-                  id="food"
-                  type="text"
-                  className={classnames("", {
-                    invalid: errors.food
-                  })}
-                />
-                <label htmlFor="food">Food given</label>
-                <span className="red-text">{errors.food}</span>
-              </div>
-    
-         
-      
-              <div class="input-field col s12">
-             
-              <select id="food_type" onChange={this.onChange} error={errors.food_type} className={classnames("", {
-                    invalid: errors.food_type
-                  })}>
-                <option value="" disabled selected>Choose an option</option>
-                <option value="Grains" >Grains</option>
-                <option value="Seeds and Nuts">Seeds & Nuts</option>
-                <option value="Fruits">Fruits</option>
-                <option value="Vegetables">Vegetables</option>
-                <option value="Other">Other</option>
-              </select>
-              
-              <label htmlFor="food_type"> Food Category</label>
-              <span className="red-text">{errors.food_type}</span>
-
-                </div>
-              
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.place_fed}
-                  error={errors.place_fed}
-                  id="place_fed"
-                  type="text"
-                  className={classnames("", {
-                    invalid: errors.place_fed
-                  })}
-                />
-                <label htmlFor="place_fed">Place of Feeding</label>
-                <span className="red-text">{errors.place_fed}</span>
-              </div>
-              <div className="input-field col s12">
-              < input
-                  
-                  id="time_fed"
-                  type="text"
-                  className={classnames("timepicker", {
-                    invalid: errors.time_fed
-                  })} ref={this.time} />
-               
-                <label htmlFor="time_fed">Time of fed</label>
-                <span className="red-text">{errors.time_fed}</span>
-              </div>
-
-
-            
-            < label htmlFor="autoschedule_enable" className="input-field col s12">
-             <input type="checkbox" defaultChecked={this.state.autoschedule_enable}  id="autoschedule_enable"  onChange={this.handleCheckboxChange}  value={this.state.autoschedule_enable}
-                  error={errors.autoschedule_enable} className={classnames("filled-in", {
-                    invalid: errors.autoschedule_enable
-                  })} />
-            <span >Enable daily insert of this record</span>
-            <br></br>
-            <span className="red-text">{errors.autoschedule_enable}</span>
-              <span className="helper-text"  data-error="wrong" data-success="right">Note: This will auto push this record daily</span>
-
-            
-            </label>
-            
-             
-            
-            <div className="col s12" style={{ paddingTop:"30px",paddingLeft: "11.250px" }}>
-              <button id="submitBtn"
-                style={{
-                  width: "150px",
-                  borderRadius: "3px",
-                  letterSpacing: "1.5px",
-                  marginTop: "1rem"
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth={true}
+                id="food"
+                label="Food Name"
+                name="food"
+                autoComplete="food"
+                onChange={(e) => handleChange(e, "food")}
+                error={errors.food !== ""}
+                helperText={
+                  <span className={classes.errormsg}>{errors.food}</span>
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                id="food_type"
+                options={[
+                  "Grains",
+                  "Fruits",
+                  "Seeds & Nuts",
+                  "Vegetables",
+                  "Other",
+                ]}
+                getOptionLabel={(food_type) => food_type}
+                onChange={(e) => handleChange(e, "food_type")}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Type of Food"
+                    variant="outlined"
+                    error={errors.food_type !== ""}
+                    helperText={
+                      <span className={classes.errormsg}>{errors.food_type}</span>
+                    }
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                id="place_fed"
+                options={countries as CountryType[]}
+                classes={{
+                  option: classes.option,
                 }}
-                type="submit"
-                className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-              >
-                Submit
-              </button>
-
-            </div>
-          </form>
-        </div>
+                onChange={(e) => handleChange(e, "place_fed")}
+                autoHighlight
+                getOptionLabel={(option) => option.label}
+                // renderOption={(option) => (
+                //   <React.Fragment>
+                //     <span>{countryToFlag(option.code)}</span>
+                //     {option.label}
+                //   </React.Fragment>
+                // )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Place of Feeding"
+                    variant="outlined"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    }}
+                    error={errors.place_fed !== ""}
+                    helperText={
+                      <span className={classes.errormsg}>{errors.place_fed}</span>
+                    }
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardTimePicker
+                  margin="normal"
+                  id="time_fed"
+                  label="Time of Fed"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change time",
+                  }}
+                error={errors.time_fed !== ""}
+                helperText={
+                  <span className={classes.errormsg}>{errors.time_fed}</span>
+                }
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange(e, "autoschedule_enable")
+                    }
+                    color="primary"
+                    name="autoschedule_enable"
+                    className={classes.checkboxcolor}
+                  />
+                }
+                label="Enable dialy automatic insert of this record"
+              />
+              <FormHelperText>
+                Note: This will auto push this record daily
+              </FormHelperText>
+              {errors.autoschedule_enable && (
+                <FormHelperText className={classes.errormsg}>
+                  {errors.autoschedule_enable}
+                </FormHelperText>
+              )}
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth={true}
+            variant="contained"
+            className={classes.submit}
+            onClick={handleSubmit}
+          >
+            Submit Record
+          </Button>
+         
+        </form>
       </div>
-    </div> */}
-    </div>
-    );
-  }
-
-
+    </Container>
+  );
+  
+};
 
 export default Landing;
